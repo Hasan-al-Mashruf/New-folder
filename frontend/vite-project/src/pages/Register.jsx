@@ -1,15 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { registerUser } from "../utils/functions";
 
 export function Register() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (name.trim()) {
-      localStorage.setItem("user", name);
-      navigate("/dashboard");
+    setError("");
+
+    if (!username.trim()) {
+      setError("Username is required");
+      return;
+    }
+
+    try {
+      const response = await registerUser({ username });
+      if (response) {
+        localStorage.setItem("user", JSON.stringify(response));
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || "Registration failed");
     }
   };
 
@@ -19,19 +33,24 @@ export function Register() {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
           Create Account
         </h2>
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
-              htmlFor="name"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-700"
             >
-              Name
+              Username
             </label>
             <input
               type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               required
             />
