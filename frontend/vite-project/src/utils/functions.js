@@ -27,3 +27,12 @@ export async function loginUser(payload) {
     console.error(error);
   }
 }
+
+export async function logoutUser(payload) {
+  try {
+    const response = await axios.post(`${api}/users/logout`, payload);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../utils/functions";
+import socket from "../utils/socket";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -19,6 +20,7 @@ export function Login() {
     try {
       const response = await loginUser({ username });
       if (response) {
+        socket.emit("userLogin");
         localStorage.setItem("user", JSON.stringify(response));
         navigate("/dashboard");
       }
