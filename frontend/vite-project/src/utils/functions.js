@@ -15,7 +15,7 @@ export async function registerUser(payload) {
     const response = await axios.post(`${api}/users/register`, payload);
     return response.data;
   } catch (error) {
-    console.error(error);
+    throw new Error(error);
   }
 }
 
@@ -31,6 +31,27 @@ export async function loginUser(payload) {
 export async function logoutUser(payload) {
   try {
     const response = await axios.post(`${api}/users/logout`, payload);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function sendMessage(payload) {
+  try {
+    const response = await axios.post(`${api}/messages`, payload);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getMessages(payload) {
+  console.log({ payload });
+  try {
+    const response = await axios.get(`${api}/messages`, {
+      params: { sender: payload.sender, receiver: payload.receiver },
+    });
     return response.data;
   } catch (error) {
     console.error(error);

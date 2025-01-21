@@ -20,7 +20,7 @@ export function Login() {
     try {
       const response = await loginUser({ username });
       if (response) {
-        socket.emit("userLogin");
+        socket.emit("userStatusSync");
         localStorage.setItem("user", JSON.stringify(response));
         navigate("/dashboard");
       }

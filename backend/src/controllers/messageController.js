@@ -2,11 +2,14 @@ import { Message } from "../models/Message.js";
 
 export const messageController = {
   getMessages: async (req, res) => {
+    const { receiver, sender } = req.query;
     try {
-      const messages = await Message.find({ room: req.params.room })
-        .populate("sender", "username")
-        .sort({ createdAt: -1 })
-        .limit(50);
+      const messages = await Message.find({
+        $or: [
+          { sender: receiver, receiver: sender },
+          { receiver: receiver, sender: sender },
+        ],
+      });
       res.json(messages);
     } catch (error) {
       res.status(500).json({ error: error.message });

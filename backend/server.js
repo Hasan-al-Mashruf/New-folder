@@ -37,7 +37,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Socket.io
-
 socketHandler(io);
 
 // connect to db

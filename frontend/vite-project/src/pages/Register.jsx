@@ -19,6 +19,7 @@ export function Register() {
     try {
       const response = await registerUser({ username });
       if (response) {
+        socket.emit("userStatusSync");
         localStorage.setItem("user", JSON.stringify(response));
         navigate("/dashboard");
       }

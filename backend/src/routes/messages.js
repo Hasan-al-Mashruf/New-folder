@@ -3,5 +3,5 @@ import { messageController } from "../controllers/messageController.js";
 
 export const router = express.Router();
 
-// router.get("/:room", messageController.getMessages);
+router.get("/", messageController.getMessages);
 router.post("/", messageController.createMessage);

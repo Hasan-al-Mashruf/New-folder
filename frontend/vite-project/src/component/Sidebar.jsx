@@ -5,14 +5,15 @@ import { logoutUser } from "../utils/functions";
 import { io } from "socket.io-client";
 import socket from "../utils/socket";
 
-const Sidebar = ({ user, users, currentChat, setCurrentChat }) => {
+const Sidebar = ({ user, users, currentChat, onChatChange }) => {
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     if (user?.username) {
       const isLogOutUser = await logoutUser({ username: user?.username });
       if (isLogOutUser) {
-        socket.emit("userLogout");
-        localStorage.removeItem("user");
+        socket.emit("userStatusSync");
+        localStorage.clear();
         navigate("/login");
       }
     }
@@ -56,7 +57,7 @@ const Sidebar = ({ user, users, currentChat, setCurrentChat }) => {
         {users.map((contact) => (
           <div
             key={contact._id}
-            onClick={() => setCurrentChat(contact._id)}
+            onClick={() => onChatChange(contact._id)}
             className={`flex items-center p-4 cursor-pointer hover:bg-gray-50 ${
               currentChat === contact._id ? "bg-blue-50" : ""
             }`}
