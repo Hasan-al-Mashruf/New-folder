@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../utils/functions";
+import socket from "../utils/socket";
 
 export function Register() {
   const [username, setUsername] = useState("");
